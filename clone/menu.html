@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>메뉴 리스트 클론</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #222222;
+      --sub: #666666;
+      --badge: #2f6fd6;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #161616;
+        --fg: #f2f2f2;
+        --sub: #aaaaaa;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #161616;
+      --fg: #f2f2f2;
+      --sub: #aaaaaa;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "Noto Sans KR", system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      padding: 24px 0;
+    }
+
+    .menu {
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      padding: 8px 16px 12px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .menu::-webkit-scrollbar { display: none; }
+
+    .menu__item {
+      flex: 0 0 auto;
+      width: 56px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      color: var(--fg);
+      position: relative;
+    }
+
+    .menu__icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      background: var(--tile, #f1f1f1);
+      transition: transform .15s ease;
+    }
+    .menu__item:hover .menu__icon { transform: translateY(-2px); }
+    .menu__item:focus-visible { outline: 2px solid var(--badge); outline-offset: 4px; border-radius: 8px; }
+
+    .menu__label {
+      font-size: 13px;
+      line-height: 1;
+      white-space: nowrap;
+      color: var(--fg);
+    }
+
+    .menu__badge {
+      position: absolute;
+      top: -6px;
+      right: -4px;
+      background: var(--badge);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 999px;
+    }
+
+    /* 가구/음식 등 추가 항목 구분 없이 동일 스타일 */
+    @media (max-width: 380px) {
+      .menu__item { width: 50px; }
+      .menu__icon { width: 44px; height: 44px; font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="menu" aria-label="주요 메뉴" id="menu"></nav>
+
+  <script>
+    // 기본 메뉴 (img03.png 기준) + 인자로 받은 추가 항목(청소, 가구, 음식, 운동)
+    const items = [
+      { label: "메일",   icon: "✉️",  tile: "#e8f7ee" },
+      { label: "카페",   icon: "☕",  tile: "#e6f7ea" },
+      { label: "블로그", icon: "📝",  tile: "#e8f0ff" },
+      { label: "쇼핑",   icon: "🛍️", tile: "#f0e8ff" },
+      { label: "뉴스",   icon: "📰",  tile: "#e7f0fb" },
+      { label: "증권",   icon: "📈",  tile: "#eef4ff" },
+      { label: "부동산", icon: "🏠",  tile: "#e4f6ec" },
+      { label: "지도",   icon: "📍",  tile: "#e7f8ef" },
+      { label: "웹툰",   icon: "📚",  tile: "#e8fbf0" },
+      { label: "치지직", icon: "⚡",  tile: "#e9fbe9", badge: "추천" },
+      { label: "청소",   icon: "🧹",  tile: "#e3f2fd" },
+      { label: "가구",   icon: "🛋️", tile: "#fdf1e4" },
+      { label: "음식",   icon: "🍚",  tile: "#fff4e0" },
+      { label: "운동",   icon: "🏃",  tile: "#fde8e8" }
+    ];
+
+    const menu = document.getElementById("menu");
+    items.forEach(({ label, icon, tile, badge }) => {
+      const a = document.createElement("a");
+      a.className = "menu__item";
+      a.href = "#";
+
+      const iconBox = document.createElement("span");
+      iconBox.className = "menu__icon";
+      iconBox.style.setProperty("--tile", tile);
+      iconBox.setAttribute("aria-hidden", "true");
+      iconBox.textContent = icon;
+
+      const text = document.createElement("span");
+      text.className = "menu__label";
+      text.textContent = label;
+
+      a.append(iconBox, text);
+
+      if (badge) {
+        const b = document.createElement("span");
+        b.className = "menu__badge";
+        b.textContent = badge;
+        a.appendChild(b);
+      }
+      menu.appendChild(a);
+    });
+  </script>
+</body>
+</html>

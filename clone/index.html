@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>클론 코딩 - 히어로 섹션</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #111111;
+      --accent: #ffe000;
+      --card-gap: 16px;
+      --card-w: 285px;
+      --card-h: 402px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #111111;
+        --fg: #f5f5f5;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #111111;
+      --fg: #f5f5f5;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "Noto Sans KR", system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero__content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 16px 80px;
+    }
+
+    .hero__title {
+      font-family: "Noto Serif KR", "Batang", serif;
+      font-weight: 400;
+      font-size: clamp(32px, 5.2vw, 60px);
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+      word-break: keep-all;
+    }
+
+    .btn {
+      margin-top: 56px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      height: 62px;
+      padding: 0 36px;
+      border: none;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #111;
+      font: inherit;
+      font-size: 18px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(255, 224, 0, .35); }
+    .btn:focus-visible { outline: 3px solid #111; outline-offset: 4px; }
+    .btn svg { width: 22px; height: 22px; }
+
+    /* 하단 가로 스트립 */
+    .strip {
+      position: relative;
+      overflow: hidden;
+      padding: 0 0 0;
+    }
+    .strip__track {
+      display: flex;
+      gap: var(--card-gap);
+      width: max-content;
+      animation: marquee 40s linear infinite;
+    }
+    .strip:hover .strip__track { animation-play-state: paused; }
+
+    .card {
+      flex: 0 0 var(--card-w);
+      height: var(--card-h);
+      position: relative;
+      overflow: hidden;
+      background: var(--c, #ddd);
+    }
+    /* 이미지 대신 들어갈 플레이스홀더 (실제 이미지로 교체) */
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 30% 35%, rgba(255,255,255,.35) 0 18%, transparent 19%),
+        linear-gradient(160deg, transparent 55%, rgba(0,0,0,.18));
+    }
+    .card span {
+      position: absolute;
+      left: 16px;
+      bottom: 14px;
+      font-size: 13px;
+      color: rgba(255,255,255,.9);
+      background: rgba(0,0,0,.25);
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+
+    .edit-fab {
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: none;
+      background: #222;
+      color: #fff;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      z-index: 2;
+    }
+    .edit-fab svg { width: 22px; height: 22px; }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(calc(-50% - var(--card-gap) / 2)); }
+    }
+
+    @media (max-width: 640px) {
+      :root { --card-w: 220px; --card-h: 310px; --card-gap: 12px; }
+      .hero__content { padding: 96px 16px 56px; }
+      .btn { height: 54px; padding: 0 28px; font-size: 16px; margin-top: 40px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .strip__track { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="hero__content">
+      <h1 class="hero__title">
+        디자인 관점으로 콘텐츠를<br>
+        기획하고 비즈니스와 연결합니다
+      </h1>
+      <button class="btn" type="button">
+        프로젝트 보기
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="4" y1="12" x2="20" y2="12"></line>
+          <polyline points="14 6 20 12 14 18"></polyline>
+        </svg>
+      </button>
+    </div>
+
+    <div class="strip" aria-label="프로젝트 미리보기">
+      <div class="strip__track" id="track"></div>
+      <button class="edit-fab" type="button" aria-label="편집">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 20h9"></path>
+          <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  <script>
+    // 플레이스홀더 카드 데이터 (실제 이미지 URL로 교체 가능)
+    const items = [
+      { c: "#c9d8d0", label: "Project 01" },
+      { c: "#e8e2d4", label: "Project 02" },
+      { c: "#b7d6e8", label: "Project 03" },
+      { c: "#d9a86c", label: "Project 04" },
+      { c: "#2f6fd6", label: "Project 05" },
+      { c: "#b62b3c", label: "Project 06" },
+      { c: "#7aa6c2", label: "Project 07" }
+    ];
+
+    // 무한 스크롤을 위해 목록을 두 번 렌더링
+    const track = document.getElementById("track");
+    [...items, ...items].forEach(({ c, label }) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.style.setProperty("--c", c);
+      const tag = document.createElement("span");
+      tag.textContent = label;
+      card.appendChild(tag);
+      track.appendChild(card);
+    });
+  </script>
+</body>
+</html>
